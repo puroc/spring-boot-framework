@@ -1,12 +1,12 @@
-package com.emrubik.springboot.app.builder;
+package com.emrubik.springboot.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootAppBuilderApplication {
+public class SpringBootAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootAppBuilderApplication.class, args);
+		SpringApplication.run(SpringBootAppApplication.class, args);
 	}
 }
