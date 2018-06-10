@@ -44,6 +44,6 @@ public class Generator {
 
     public static void main(String[] args) {
         String packageName = "com.emrubik.springboot.dao";
-        generateByTables(packageName, "user", "role","org","permission","user_role_bind","role_permission_bind","user_token_bind");
+        generateByTables(packageName, "project","template");
     }
 }

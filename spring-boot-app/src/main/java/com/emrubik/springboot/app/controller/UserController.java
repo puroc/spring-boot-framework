@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,8 +51,7 @@ public class UserController {
 
     @IgnoreJwtValidation
     @PostMapping("/login")
-    public @NotNull
-    ResponseEntity login(@RequestBody @Validated BaseReq<LoginReq> baseReq) throws Exception {
+    public ResponseEntity login(@RequestBody @Validated BaseReq<LoginReq> baseReq) throws Exception {
         LoginReq loginReq = baseReq.getPayloads().get(0);
 
         //验证用户合法性
@@ -87,8 +85,7 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public @NotNull
-    ResponseEntity getUserInfo() {
+    public ResponseEntity getUserInfo() {
         User user = userService.getUserInfo(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
         resp.setPayLoad(user);
@@ -96,8 +93,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public @NotNull
-    ResponseEntity
+    public ResponseEntity
     deleteUserList(@RequestBody BaseReq<User> baseReq) {
         List<String> userIdList = new ArrayList<String>();
         List<User> users = baseReq.getPayloads();
@@ -115,8 +111,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
-    public @NotNull
-    ResponseEntity deleteUser(@PathVariable String username) {
+    public ResponseEntity deleteUser(@PathVariable String username) {
         boolean result = userService.delete(new EntityWrapper<User>().eq("username", username));
         BaseResp resp = new BaseResp();
         if (!result) {
@@ -127,8 +122,7 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public @NotNull
-    ResponseEntity updateUser(@PathVariable String username, @RequestBody BaseReq<User> baseReq) {
+    public ResponseEntity updateUser(@PathVariable String username, @RequestBody BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
         boolean result = userService.update(user, new EntityWrapper<User>().eq("username", username));
@@ -141,8 +135,7 @@ public class UserController {
     }
 
     @PostMapping
-    public @NotNull
-    ResponseEntity addUser(@RequestBody @Validated BaseReq<User> baseReq) {
+    public ResponseEntity addUser(@RequestBody @Validated BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
         BaseResp resp = new BaseResp();
@@ -162,8 +155,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public @NotNull
-    ResponseEntity logout() throws Exception {
+    public ResponseEntity logout() throws Exception {
         boolean result = userTokenBindService.delete(new EntityWrapper<UserTokenBind>().eq("user_id", BaseContextHandler.getUserId()));
         return ResponseEntity.ok().build();
     }
@@ -195,8 +187,7 @@ public class UserController {
     }
 
     @GetMapping("token")
-    public @NotNull
-    ResponseEntity refreshToken() throws Exception {
+    public ResponseEntity refreshToken() throws Exception {
         User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
         //生成token
         String jwtToken = createToken(user);

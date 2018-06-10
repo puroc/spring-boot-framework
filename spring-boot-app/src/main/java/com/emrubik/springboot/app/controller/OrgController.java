@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +50,7 @@ public class OrgController {
     private IRoleService roleService;
 
     @GetMapping("/{orgId}/users")
-    public @NotNull
+    public
     ResponseEntity getUserListByOrgId(@PathVariable String orgId,
                                       @RequestParam int current, int size,
                                       @RequestParam(required = false) String name,
@@ -84,7 +83,7 @@ public class OrgController {
     }
 
     @GetMapping("/{orgId}/roles")
-    public @NotNull
+    public
     ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
                                       @RequestParam int current, int size,
                                       @RequestParam(required = false) String name) {
@@ -110,7 +109,7 @@ public class OrgController {
     }
 
     @GetMapping("{orgId}/tree")
-    public @NotNull
+    public
     ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
         OrgTree orgTree = orgService.getOrgTree(orgId);
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
@@ -119,7 +118,7 @@ public class OrgController {
     }
 
     @GetMapping("{orgId}")
-    public @NotNull
+    public
     ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId) {
         Org org = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId));
         BaseResp<Org> baseResp = new BaseResp<Org>();
@@ -128,7 +127,7 @@ public class OrgController {
     }
 
     @PostMapping("{orgId}")
-    public @NotNull
+    public
     ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq, @PathVariable String orgId) {
         AddOrgReq addOrgReq = baseReq.getPayloads().get(0);
         Org org = new Org();
@@ -145,7 +144,7 @@ public class OrgController {
     }
 
     @DeleteMapping("{orgId}")
-    public @NotNull
+    public
     ResponseEntity deleteOrg(@PathVariable String orgId) {
         BaseResp baseResp = new BaseResp();
         List<Org> sonOrgList = orgService.selectList(new EntityWrapper<Org>().eq("parent_id", orgId));

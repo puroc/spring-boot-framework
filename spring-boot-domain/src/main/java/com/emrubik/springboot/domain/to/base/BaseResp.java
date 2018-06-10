@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class BaseResp<T> {
+public class  BaseResp<T> {
     public static final String RESULT_SUCCESS = "1";
     public static final String RESULT_FAILED = "0";
 //    10开头的为机构相关结果码

@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,8 +41,7 @@ public class RoleController {
 
     @Transactional
     @PostMapping
-    public @NotNull
-    ResponseEntity addRole(@RequestBody @Validated BaseReq<Role> baseReq) {
+    public ResponseEntity addRole(@RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
         role.setTimestamp(new Date());
         boolean result = roleService.insert(role);
@@ -55,7 +53,7 @@ public class RoleController {
         }
 
         List<RolePermissionBind> permissionBinds = changePermissionListToRolePermissionBind(role);
-        if(!permissionBinds.isEmpty()){
+        if (!permissionBinds.isEmpty()) {
             result = rolePermissionBindService.insertBatch(permissionBinds);
             if (!result) {
                 baseResp.setResultCode(BaseResp.RESULT_FAILED);
@@ -66,8 +64,7 @@ public class RoleController {
     }
 
     @PostMapping("/{id}/permission")
-    public @NotNull
-    ResponseEntity addRolePermissionBind(@PathVariable String id, @RequestBody @Validated BaseReq<RolePermissionBind> baseReq) {
+    public ResponseEntity addRolePermissionBind(@PathVariable String id, @RequestBody @Validated BaseReq<RolePermissionBind> baseReq) {
         List<RolePermissionBind> permissionBinds = baseReq.getPayloads();
         boolean result = rolePermissionBindService.insertBatch(permissionBinds);
         BaseResp baseResp = new BaseResp();
@@ -80,8 +77,7 @@ public class RoleController {
 
     @DeleteMapping("/{id}")
     @Transactional(rollbackFor = Exception.class)
-    public @NotNull
-    ResponseEntity deleteRole(@PathVariable String id) {
+    public ResponseEntity deleteRole(@PathVariable String id) {
         BaseResp resp = new BaseResp();
         //如果有用户绑定了这个角色，则不允许删除
         boolean binded = roleService.isRoleBinded(id);
@@ -110,8 +106,7 @@ public class RoleController {
 
     @Transactional
     @PutMapping("/{id}")
-    public @NotNull
-    ResponseEntity updateRole(@PathVariable String id, @RequestBody @Validated BaseReq<Role> baseReq) {
+    public ResponseEntity updateRole(@PathVariable String id, @RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
         role.setTimestamp(new Date());
         boolean result = roleService.update(role, new EntityWrapper<Role>().eq("id", id));
@@ -158,8 +153,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}/permission")
-    public @NotNull
-    ResponseEntity deleteRolePermissionBind(@PathVariable String id) {
+    public ResponseEntity deleteRolePermissionBind(@PathVariable String id) {
         boolean result = rolePermissionBindService.delete(new EntityWrapper<RolePermissionBind>().eq("role_id", id));
         BaseResp resp = new BaseResp();
         if (!result) {
@@ -170,8 +164,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public @NotNull
-    ResponseEntity getRoleInfo(@PathVariable String id) {
+    public ResponseEntity getRoleInfo(@PathVariable String id) {
         Role role = roleService.getRoleInfo(id);
         BaseResp<Role> baseResp = new BaseResp<Role>();
         baseResp.setPayLoad(role);
@@ -179,8 +172,7 @@ public class RoleController {
     }
 
     @DeleteMapping
-    public @NotNull
-    ResponseEntity
+    public ResponseEntity
     deleteRoleList(@RequestBody BaseReq<Role> baseReq) {
         List<String> roleIdList = new ArrayList<String>();
         BaseResp resp = new BaseResp();
