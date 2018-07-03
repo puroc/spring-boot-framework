@@ -29,8 +29,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Autowired
     private IUserRoleBindService userRoleBindService;
 
-
-
     @Override
     public Role getRoleInfo(String id) {
         return baseMapper.getRoleInfo(id);
