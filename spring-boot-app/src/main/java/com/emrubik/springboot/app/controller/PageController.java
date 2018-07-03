@@ -36,6 +36,7 @@ import java.util.List;
 @RequestMapping("/app/page")
 public class PageController {
 
+    public static final String VIEWS = "@/views";
     @Autowired
     private IPageService iPageService;
 
@@ -51,6 +52,7 @@ public class PageController {
     @PostMapping
     public ResponseEntity addPage(@RequestBody @Validated BaseReq<Page> baseReq) {
         Page page = baseReq.getPayloads().get(0);
+        page.setComponent(VIEWS+page.getUrl());
         page.setTimestamp(new Date());
         BaseResp resp = new BaseResp();
         boolean result = false;
@@ -71,6 +73,7 @@ public class PageController {
     @PutMapping("/{pageId}")
     public ResponseEntity updatePage(@PathVariable String pageId, @RequestBody BaseReq<Page> baseReq) {
         Page page = baseReq.getPayloads().get(0);
+        page.setComponent(VIEWS+page.getUrl());
         page.setTimestamp(new Date());
         boolean result = iPageService.update(page, new EntityWrapper<Page>().eq("id", pageId));
         BaseResp resp = new BaseResp();
