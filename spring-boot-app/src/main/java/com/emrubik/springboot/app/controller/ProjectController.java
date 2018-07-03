@@ -37,18 +37,31 @@ public class ProjectController {
     @Autowired
     private IProjectService iProjectService;
 
+//    @GetMapping("/list")
+//    public ResponseEntity getProjectListByPage(@RequestParam int current, int size) {
+//        Page<Project> projectPage = iProjectService.selectPage(new Page<Project>(current, size), new EntityWrapper<Project>().eq("user_id", BaseContextHandler.getUserId()));
+//        PageResp<Project> baseResp = new PageResp<Project>();
+//        baseResp.setPayloads(projectPage.getRecords());
+//        baseResp.setTotalNum(projectPage.getTotal());
+//        return ResponseEntity.ok(baseResp);
+//    }
+
     @GetMapping("/list")
-    public ResponseEntity getProjectList(@RequestParam int current, int size) {
-        Page<Project> projectPage = iProjectService.selectPage(new Page<Project>(current, size), new EntityWrapper<Project>().eq("user_id", BaseContextHandler.getUserId()));
-        PageResp<Project> baseResp = new PageResp<Project>();
-        baseResp.setPayloads(projectPage.getRecords());
-        baseResp.setTotalNum(projectPage.getTotal());
+    public ResponseEntity getProjectList() {
+        List<Project> projectList = iProjectService.selectList(new EntityWrapper<Project>().eq("user_id", BaseContextHandler.getUserId()));
+        BaseResp<Project> baseResp = new BaseResp<Project>();
+        baseResp.setPayloads(projectList);
+//        Page<Project> projectPage = iProjectService.selectPage(new Page<Project>(current, size), new EntityWrapper<Project>().eq("user_id", BaseContextHandler.getUserId()));
+//        PageResp<Project> baseResp = new PageResp<Project>();
+//        baseResp.setPayloads(projectPage.getRecords());
+//        baseResp.setTotalNum(projectPage.getTotal());
         return ResponseEntity.ok(baseResp);
     }
 
     @PostMapping
     public ResponseEntity addProject(@RequestBody @Validated BaseReq<Project> baseReq) {
         Project project = baseReq.getPayloads().get(0);
+        project.setUserId(Integer.parseInt(BaseContextHandler.getUserId()));
         project.setTimestamp(new Date());
         BaseResp resp = new BaseResp();
         boolean result = false;
