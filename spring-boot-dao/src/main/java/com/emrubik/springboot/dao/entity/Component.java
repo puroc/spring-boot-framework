@@ -2,6 +2,8 @@ package com.emrubik.springboot.dao.entity;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
 
@@ -11,13 +13,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-07-25
+ * @since 2018-07-26
  */
 public class Component extends Model<Component> {
 
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    private String componentId;
     private Integer pageId;
     private String name;
     private String type;
@@ -30,12 +34,20 @@ public class Component extends Model<Component> {
     private String styles;
 
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(String componentId) {
+        this.componentId = componentId;
     }
 
     public Integer getPageId() {
@@ -127,6 +139,7 @@ public class Component extends Model<Component> {
     public String toString() {
         return "Component{" +
         ", id=" + id +
+        ", componentId=" + componentId +
         ", pageId=" + pageId +
         ", name=" + name +
         ", type=" + type +

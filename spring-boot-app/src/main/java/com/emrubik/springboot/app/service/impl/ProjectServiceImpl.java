@@ -10,9 +10,12 @@ import com.emrubik.springboot.dao.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author puroc123
@@ -26,7 +29,12 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public boolean deleteAllResouces(String projectId) throws Exception {
-        //删除工程下所有页面
-        return iPageService.delete(new EntityWrapper<Page>().eq("project_id", projectId));
+        //删除工程下所有的页面及页面包含的资源
+        List<Page> pages = iPageService.selectList(new EntityWrapper<Page>().eq("project_id", projectId));
+        List<String> pageIdList = new ArrayList<String>();
+        for (Page page : pages) {
+            pageIdList.add(page.getId()+"");
+        }
+        return iPageService.deleteAllResouces(pageIdList);
     }
 }
