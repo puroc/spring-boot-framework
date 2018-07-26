@@ -44,6 +44,6 @@ public class Generator {
 
     public static void main(String[] args) {
         String packageName = "com.emrubik.springboot.dao";
-        generateByTables(packageName, "page");
+        generateByTables(packageName, "component");
     }
 }

@@ -1,9 +1,13 @@
 package com.emrubik.springboot.app.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.emrubik.springboot.app.service.IPageService;
 import com.emrubik.springboot.app.service.IProjectService;
+import com.emrubik.springboot.dao.entity.Page;
 import com.emrubik.springboot.dao.entity.Project;
 import com.emrubik.springboot.dao.mapper.ProjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +21,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements IProjectService {
 
+    @Autowired
+    private IPageService iPageService;
+
+    @Override
+    public boolean deleteAllResouces(String projectId) throws Exception {
+        //删除工程下所有页面
+        return iPageService.delete(new EntityWrapper<Page>().eq("project_id", projectId));
+    }
 }

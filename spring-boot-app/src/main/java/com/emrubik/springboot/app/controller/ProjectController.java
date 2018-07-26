@@ -10,6 +10,7 @@ import com.emrubik.springboot.dao.entity.Project;
 import com.emrubik.springboot.domain.to.base.BaseReq;
 import com.emrubik.springboot.domain.to.base.BaseResp;
 import com.emrubik.springboot.domain.to.base.PageResp;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import java.util.List;
  * @author puroc123
  * @since 2018-05-29
  */
+@Slf4j
 @Controller
 @Validated
 @RequestMapping("/app/project")
@@ -93,13 +95,14 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity deleteProject(@PathVariable String projectId) {
+    public ResponseEntity deleteProject(@PathVariable String projectId) throws Exception {
         boolean result = iProjectService.delete(new EntityWrapper<Project>().eq("id", projectId));
         BaseResp resp = new BaseResp();
         if (!result) {
             resp.setMessage("projectId:" + projectId + "的工程不存在，删除失败");
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
+        iProjectService.deleteAllResouces(projectId);
         return ResponseEntity.ok(resp);
     }
 
@@ -110,7 +113,13 @@ public class ProjectController {
         List<Project> projects = baseReq.getPayloads();
         int size = projects.size();
         for (int i = 0; i < size; i++) {
-            projectIdList.add(projects.get(i).getId() + "");
+            String projectId = projects.get(i).getId() + "";
+            projectIdList.add(projectId);
+            try {
+                iProjectService.deleteAllResouces(projectId);
+            } catch (Exception e) {
+                log.error("删除工程:"+projectId+"的资源失败");
+            }
         }
         BaseResp resp = new BaseResp();
         boolean result = iProjectService.deleteBatchIds(projectIdList);

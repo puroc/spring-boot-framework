@@ -3,9 +3,11 @@ package com.emrubik.springboot.app.controller;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.emrubik.springboot.app.service.IComponentService;
 import com.emrubik.springboot.app.service.IPageService;
 import com.emrubik.springboot.app.service.IProjectService;
 import com.emrubik.springboot.common.util.BaseContextHandler;
+import com.emrubik.springboot.dao.entity.Component;
 import com.emrubik.springboot.dao.entity.Page;
 import com.emrubik.springboot.dao.entity.Project;
 import com.emrubik.springboot.domain.to.base.BaseReq;
@@ -25,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author puroc123
@@ -33,26 +35,29 @@ import java.util.List;
  */
 @Controller
 @Validated
-@RequestMapping("/app/page")
+@RequestMapping("/app")
 public class PageController {
 
     public static final String VIEWS = "@/views";
     @Autowired
     private IPageService iPageService;
 
-    @GetMapping("/list")
-    public ResponseEntity getPageListByPage(@RequestParam int current, int size) {
-        com.baomidou.mybatisplus.plugins.Page<Page> pages = iPageService.selectPage(new com.baomidou.mybatisplus.plugins.Page<Page>(current, size), new EntityWrapper<Page>().eq("project_id", BaseContextHandler.getUserId()));
+    @Autowired
+    private IComponentService iComponentService;
+
+    @GetMapping("/{projectId}/page/list")
+    public ResponseEntity getPageListByPage(@PathVariable int projectId, @RequestParam int current, @RequestParam int size) {
+        com.baomidou.mybatisplus.plugins.Page<Page> pages = iPageService.selectPage(new com.baomidou.mybatisplus.plugins.Page<Page>(current, size), new EntityWrapper<Page>().eq("project_id", projectId));
         PageResp<Page> baseResp = new PageResp<Page>();
         baseResp.setPayloads(pages.getRecords());
         baseResp.setTotalNum(pages.getTotal());
         return ResponseEntity.ok(baseResp);
     }
 
-    @PostMapping
+    @PostMapping("/{projectId}/page")
     public ResponseEntity addPage(@RequestBody @Validated BaseReq<Page> baseReq) {
         Page page = baseReq.getPayloads().get(0);
-        page.setComponent(VIEWS+page.getUrl());
+        page.setComponent(VIEWS + page.getUrl());
         page.setTimestamp(new Date());
         BaseResp resp = new BaseResp();
         boolean result = false;
@@ -70,10 +75,10 @@ public class PageController {
         return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/{pageId}")
+    @PutMapping("/{projectId}/page/{pageId}")
     public ResponseEntity updatePage(@PathVariable String pageId, @RequestBody BaseReq<Page> baseReq) {
         Page page = baseReq.getPayloads().get(0);
-        page.setComponent(VIEWS+page.getUrl());
+        page.setComponent(VIEWS + page.getUrl());
         page.setTimestamp(new Date());
         boolean result = iPageService.update(page, new EntityWrapper<Page>().eq("id", pageId));
         BaseResp resp = new BaseResp();
@@ -84,7 +89,7 @@ public class PageController {
         return ResponseEntity.ok(resp);
     }
 
-    @DeleteMapping("/{pageId}")
+    @DeleteMapping("/{projectId}/page/{pageId}")
     public ResponseEntity deletePage(@PathVariable String pageId) {
         boolean result = iPageService.delete(new EntityWrapper<Page>().eq("id", pageId));
         BaseResp resp = new BaseResp();
@@ -95,7 +100,7 @@ public class PageController {
         return ResponseEntity.ok(resp);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{projectId}/page")
     public ResponseEntity
     deletePageList(@RequestBody BaseReq<Page> baseReq) {
         List<String> pageIdList = new ArrayList<String>();
@@ -112,6 +117,19 @@ public class PageController {
         }
         return ResponseEntity.ok(resp);
     }
+
+    @PostMapping("/{projectId}/{pageId}/page/components")
+    public ResponseEntity savePageComponents(@PathVariable String projectId, @PathVariable String pageId, @RequestBody @Validated BaseReq<Component> baseReq) {
+        List<Component> components = baseReq.getPayloads();
+        boolean result = iComponentService.insertOrUpdateAllColumnBatch(components);
+        BaseResp resp = new BaseResp();
+        if (!result) {
+            resp.setMessage("pageId:" + pageId + " 插入或更新组件失败");
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
+    }
+
 
 }
 

@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +51,8 @@ public class OrgController {
     @GetMapping("/{orgId}/users")
     public
     ResponseEntity getUserListByOrgId(@PathVariable String orgId,
-                                      @RequestParam int current, int size,
+                                      @RequestParam int current,
+                                      @RequestParam int size,
                                       @RequestParam(required = false) String name,
                                       @RequestParam(required = false) String username,
                                       @RequestParam(required = false) String phone,
@@ -85,7 +85,8 @@ public class OrgController {
     @GetMapping("/{orgId}/roles")
     public
     ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
-                                      @RequestParam int current, int size,
+                                      @RequestParam int current,
+                                      @RequestParam int size,
                                       @RequestParam(required = false) String name) {
         //根据当前机构获取其上级所有机构（包括当前机构）
         List<Integer> upperOrgList = orgService.getUpperOrgList(orgId);
