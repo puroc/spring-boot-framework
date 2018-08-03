@@ -92,8 +92,10 @@ public class PageController {
     }
 
     @DeleteMapping("/project/{projectId}/page/{pageId}")
-    public ResponseEntity deletePage(@PathVariable String pageId) {
-        boolean result = iPageService.delete(new EntityWrapper<Page>().eq("id", pageId));
+    public ResponseEntity deletePage(@PathVariable String pageId) throws Exception {
+        boolean result = iPageService.deleteAllResouces(new ArrayList<String>() {{
+            this.add(pageId);
+        }});
         BaseResp resp = new BaseResp();
         if (!result) {
             resp.setMessage("pageId:" + pageId + "的页面不存在，删除失败");
@@ -104,7 +106,7 @@ public class PageController {
 
     @DeleteMapping("/project/{projectId}/page")
     public ResponseEntity
-    deletePageList(@RequestBody BaseReq<Page> baseReq) {
+    deletePageList(@RequestBody BaseReq<Page> baseReq) throws Exception {
         List<String> pageIdList = new ArrayList<String>();
         List<Page> pages = baseReq.getPayloads();
         int size = pages.size();
@@ -112,7 +114,7 @@ public class PageController {
             pageIdList.add(pages.get(i).getId() + "");
         }
         BaseResp resp = new BaseResp();
-        boolean result = iPageService.deleteBatchIds(pageIdList);
+        boolean result = iPageService.deleteAllResouces(pageIdList);
         if (!result) {
             resp.setMessage("删除失败,pageIdList:" + pageIdList);
             resp.setResultCode(BaseResp.RESULT_FAILED);
