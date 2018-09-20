@@ -39,8 +39,8 @@ public class RoleController {
     @Autowired
     private IRolePermissionBindService rolePermissionBindService;
 
-    @Transactional
     @PostMapping
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity addRole(@RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
         role.setTimestamp(new Date());
@@ -104,8 +104,8 @@ public class RoleController {
         return ResponseEntity.ok(resp);
     }
 
-    @Transactional
     @PutMapping("/{id}")
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity updateRole(@PathVariable String id, @RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
         role.setTimestamp(new Date());

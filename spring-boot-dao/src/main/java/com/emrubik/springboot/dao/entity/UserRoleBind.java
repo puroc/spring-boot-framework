@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -12,7 +13,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-09-20
  */
 public class UserRoleBind extends Model<UserRoleBind> {
 
@@ -22,6 +23,7 @@ public class UserRoleBind extends Model<UserRoleBind> {
     private Integer id;
     private Integer userId;
     private Integer roleId;
+    private Integer orgId;
 
 
     public Integer getId() {
@@ -48,6 +50,14 @@ public class UserRoleBind extends Model<UserRoleBind> {
         this.roleId = roleId;
     }
 
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -59,6 +69,7 @@ public class UserRoleBind extends Model<UserRoleBind> {
         ", id=" + id +
         ", userId=" + userId +
         ", roleId=" + roleId +
+        ", orgId=" + orgId +
         "}";
     }
 }

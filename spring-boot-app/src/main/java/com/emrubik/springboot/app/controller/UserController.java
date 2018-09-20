@@ -4,12 +4,15 @@ package com.emrubik.springboot.app.controller;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.emrubik.springboot.app.constant.Constants;
+import com.emrubik.springboot.app.service.IUserRoleBindService;
 import com.emrubik.springboot.app.service.IUserService;
 import com.emrubik.springboot.app.service.IUserTokenBindService;
 import com.emrubik.springboot.common.annotation.IgnoreJwtValidation;
 import com.emrubik.springboot.common.util.BaseContextHandler;
 import com.emrubik.springboot.common.util.JwtHelper;
+import com.emrubik.springboot.dao.entity.Role;
 import com.emrubik.springboot.dao.entity.User;
+import com.emrubik.springboot.dao.entity.UserRoleBind;
 import com.emrubik.springboot.dao.entity.UserTokenBind;
 import com.emrubik.springboot.domain.to.base.BaseReq;
 import com.emrubik.springboot.domain.to.base.BaseResp;
@@ -20,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +49,9 @@ public class UserController {
 
     @Autowired
     private IUserTokenBindService userTokenBindService;
+
+    @Autowired
+    private IUserRoleBindService userRoleBindService;
 
     @Autowired
     private JwtHelper jwtHelper;
@@ -135,6 +142,7 @@ public class UserController {
     }
 
     @PostMapping
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity addUser(@RequestBody @Validated BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
@@ -145,9 +153,28 @@ public class UserController {
         } else {
             result = userService.insert(user);
         }
+
         if (!result) {
             if (StringUtils.isEmpty(resp.getMessage())) {
                 resp.setMessage("username:" + user.getUsername() + " 添加用户失败");
+            }
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+
+        List<UserRoleBind> userRoleBindList = new ArrayList<>();
+        for (Role role : user.getRoles()) {
+            userRoleBindList.add(new UserRoleBind(){{
+                this.setUserId(user.getId());
+                this.setRoleId(role.getId());
+                this.setOrgId(user.getOrgId());
+            }});
+        }
+
+        result = userRoleBindService.insertBatch(userRoleBindList);
+
+        if (!result) {
+            if (StringUtils.isEmpty(resp.getMessage())) {
+                resp.setMessage("username:" + user.getUsername() + " 添加用户与角色的绑定关系失败");
             }
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }

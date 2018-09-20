@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class Role extends Model<Role> {
     private Integer id;
 
     @Pattern(regexp = "^[\\u4e00-\\u9fa5]*$", message = "角色名称必须为中文")
-    @NotBlank
+//    @NotBlank
     private String name;
 
     @JSONField(serialize = false)

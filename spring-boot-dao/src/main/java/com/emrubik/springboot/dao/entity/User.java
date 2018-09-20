@@ -7,8 +7,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -55,6 +56,7 @@ public class User extends Model<User> {
     @NotNull(message = "机构ID不能为空")
     private Integer orgId;
 
+    @Valid
     @TableField(exist = false)
     private List<Role> roles;
 
