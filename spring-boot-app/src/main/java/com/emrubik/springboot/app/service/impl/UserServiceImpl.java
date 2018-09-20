@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IUserService;
-import com.emrubik.springboot.dao.entity.User;
 import com.emrubik.springboot.dao.mapper.UserMapper;
+import com.emrubik.springboot.domain.po.User;
 import org.springframework.stereotype.Service;
 
 /**

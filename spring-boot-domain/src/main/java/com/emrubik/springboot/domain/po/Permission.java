@@ -1,11 +1,10 @@
-package com.emrubik.springboot.dao.entity;
+package com.emrubik.springboot.domain.po;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -15,7 +14,7 @@ import java.util.Date;
  * @author puroc123
  * @since 2018-03-20
  */
-public class Org extends Model<Org> {
+public class Permission extends Model<Permission> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,16 +22,10 @@ public class Org extends Model<Org> {
     private Integer id;
     private String name;
     private Integer parentId;
+    private String code;
+    private String type;
+    private String url;
 
-    private Date timestamp;
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
 
     public Integer getId() {
         return id;
@@ -58,6 +51,30 @@ public class Org extends Model<Org> {
         this.parentId = parentId;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -65,10 +82,13 @@ public class Org extends Model<Org> {
 
     @Override
     public String toString() {
-        return "Org{" +
+        return "Permission{" +
         ", id=" + id +
         ", name=" + name +
         ", parentId=" + parentId +
+        ", code=" + code +
+        ", type=" + type +
+        ", url=" + url +
         "}";
     }
 }

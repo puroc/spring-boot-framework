@@ -1,10 +1,10 @@
-package com.emrubik.springboot.dao.entity;
+package com.emrubik.springboot.domain.po;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,17 +13,20 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-09-20
+ * @since 2018-03-20
  */
-public class UserRoleBind extends Model<UserRoleBind> {
+public class RolePermissionBind extends Model<RolePermissionBind> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private Integer userId;
+
+    @NotNull
     private Integer roleId;
-    private Integer orgId;
+
+    @NotNull
+    private Integer permissionId;
 
 
     public Integer getId() {
@@ -34,14 +37,6 @@ public class UserRoleBind extends Model<UserRoleBind> {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public Integer getRoleId() {
         return roleId;
     }
@@ -50,12 +45,12 @@ public class UserRoleBind extends Model<UserRoleBind> {
         this.roleId = roleId;
     }
 
-    public Integer getOrgId() {
-        return orgId;
+    public Integer getPermissionId() {
+        return permissionId;
     }
 
-    public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
+    public void setPermissionId(Integer permissionId) {
+        this.permissionId = permissionId;
     }
 
     @Override
@@ -65,11 +60,10 @@ public class UserRoleBind extends Model<UserRoleBind> {
 
     @Override
     public String toString() {
-        return "UserRoleBind{" +
+        return "RolePermissionBind{" +
         ", id=" + id +
-        ", userId=" + userId +
         ", roleId=" + roleId +
-        ", orgId=" + orgId +
+        ", permissionId=" + permissionId +
         "}";
     }
 }

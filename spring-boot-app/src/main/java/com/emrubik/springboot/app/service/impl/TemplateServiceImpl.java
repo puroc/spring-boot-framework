@@ -2,8 +2,8 @@ package com.emrubik.springboot.app.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.ITemplateService;
-import com.emrubik.springboot.dao.entity.Template;
 import com.emrubik.springboot.dao.mapper.TemplateMapper;
+import com.emrubik.springboot.domain.po.Template;
 import org.springframework.stereotype.Service;
 
 /**

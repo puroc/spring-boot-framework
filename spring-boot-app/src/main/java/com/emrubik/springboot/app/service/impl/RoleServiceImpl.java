@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IRoleService;
 import com.emrubik.springboot.app.service.IUserRoleBindService;
-import com.emrubik.springboot.dao.entity.Role;
-import com.emrubik.springboot.dao.entity.UserRoleBind;
 import com.emrubik.springboot.dao.mapper.RoleMapper;
+import com.emrubik.springboot.domain.po.Role;
+import com.emrubik.springboot.domain.po.UserRoleBind;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

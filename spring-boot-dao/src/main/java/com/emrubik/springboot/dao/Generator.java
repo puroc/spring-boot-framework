@@ -38,7 +38,7 @@ public class Generator {
                         new PackageConfig()
                                 .setParent(packageName)
                                 .setController("controller")
-                                .setEntity("entity")
+                                .setEntity("po")
                 ).execute();
     }
 

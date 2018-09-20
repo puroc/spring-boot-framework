@@ -3,8 +3,8 @@ package com.emrubik.springboot.app.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IPermissionService;
-import com.emrubik.springboot.dao.entity.Permission;
 import com.emrubik.springboot.dao.mapper.PermissionMapper;
+import com.emrubik.springboot.domain.po.Permission;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,10 +1,9 @@
-package com.emrubik.springboot.dao.entity;
+package com.emrubik.springboot.domain.po;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,20 +12,17 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-09-20
  */
-public class RolePermissionBind extends Model<RolePermissionBind> {
+public class UserRoleBind extends Model<UserRoleBind> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
-    @NotNull
+    private Integer userId;
     private Integer roleId;
-
-    @NotNull
-    private Integer permissionId;
+    private Integer orgId;
 
 
     public Integer getId() {
@@ -37,6 +33,14 @@ public class RolePermissionBind extends Model<RolePermissionBind> {
         this.id = id;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getRoleId() {
         return roleId;
     }
@@ -45,12 +49,12 @@ public class RolePermissionBind extends Model<RolePermissionBind> {
         this.roleId = roleId;
     }
 
-    public Integer getPermissionId() {
-        return permissionId;
+    public Integer getOrgId() {
+        return orgId;
     }
 
-    public void setPermissionId(Integer permissionId) {
-        this.permissionId = permissionId;
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
     }
 
     @Override
@@ -60,10 +64,11 @@ public class RolePermissionBind extends Model<RolePermissionBind> {
 
     @Override
     public String toString() {
-        return "RolePermissionBind{" +
+        return "UserRoleBind{" +
         ", id=" + id +
+        ", userId=" + userId +
         ", roleId=" + roleId +
-        ", permissionId=" + permissionId +
+        ", orgId=" + orgId +
         "}";
     }
 }

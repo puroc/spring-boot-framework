@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emrubik.springboot.dao.mapper.RoleMapper">
 
-    <resultMap id="RoleResultMap" type="com.emrubik.springboot.dao.entity.Role">
+    <resultMap id="RoleResultMap" type="com.emrubik.springboot.domain.po.Role">
         <id column="id" jdbcType="INTEGER" property="id"></id>
         <result column="name" jdbcType="VARCHAR" property="name"></result>
         <result column="orgId" jdbcType="INTEGER" property="orgId"></result>
-        <association property="org" javaType="com.emrubik.springboot.dao.entity.Org">
+        <association property="org" javaType="com.emrubik.springboot.domain.po.Org">
             <id column="orgId" jdbcType="INTEGER" property="id"></id>
             <result column="orgName" jdbcType="VARCHAR" property="name"></result>
         </association>
-        <collection property="permissions" ofType="com.emrubik.springboot.dao.entity.Permission">
+        <collection property="permissions" ofType="com.emrubik.springboot.domain.po.Permission">
             <id column="permissionId" jdbcType="INTEGER" property="id"></id>
             <result column="permissionName" jdbcType="VARCHAR" property="name"></result>
         </collection>

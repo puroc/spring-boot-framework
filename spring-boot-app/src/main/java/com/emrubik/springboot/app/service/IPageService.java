@@ -1,7 +1,7 @@
 package com.emrubik.springboot.app.service;
 
-import com.emrubik.springboot.dao.entity.Page;
 import com.baomidou.mybatisplus.service.IService;
+import com.emrubik.springboot.domain.po.Page;
 
 import java.util.List;
 

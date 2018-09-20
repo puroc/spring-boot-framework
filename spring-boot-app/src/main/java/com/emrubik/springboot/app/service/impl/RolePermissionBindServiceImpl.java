@@ -3,8 +3,8 @@ package com.emrubik.springboot.app.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IRolePermissionBindService;
-import com.emrubik.springboot.dao.entity.RolePermissionBind;
 import com.emrubik.springboot.dao.mapper.RolePermissionBindMapper;
+import com.emrubik.springboot.domain.po.RolePermissionBind;
 import org.springframework.stereotype.Service;
 
 /**

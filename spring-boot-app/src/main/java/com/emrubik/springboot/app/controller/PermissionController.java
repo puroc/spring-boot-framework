@@ -3,7 +3,7 @@ package com.emrubik.springboot.app.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.emrubik.springboot.app.service.IPermissionService;
-import com.emrubik.springboot.dao.entity.Permission;
+import com.emrubik.springboot.domain.po.Permission;
 import com.emrubik.springboot.domain.to.base.BaseResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

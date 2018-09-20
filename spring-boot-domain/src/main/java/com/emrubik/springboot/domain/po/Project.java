@@ -1,9 +1,10 @@
-package com.emrubik.springboot.dao.entity;
+package com.emrubik.springboot.domain.po;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,17 +14,20 @@ import java.util.Date;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-05-29
  */
-public class UserTokenBind extends Model<UserTokenBind> {
+public class Project extends Model<Project> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    @Pattern(regexp = "^\\w+$", message = "用户名只能由字母数字和下划线组成")
+    private String name;
+    private String desc;
     private Integer userId;
-    private String token;
-    private Integer expire;
+    private Integer templateId;
     private Date timestamp;
 
 
@@ -35,28 +39,28 @@ public class UserTokenBind extends Model<UserTokenBind> {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getToken() {
-        return token;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public Integer getExpire() {
-        return expire;
+    public Integer getTemplateId() {
+        return templateId;
     }
 
-    public void setExpire(Integer expire) {
-        this.expire = expire;
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
     }
 
     public Date getTimestamp() {
@@ -74,12 +78,21 @@ public class UserTokenBind extends Model<UserTokenBind> {
 
     @Override
     public String toString() {
-        return "UserTokenBind{" +
+        return "Project{" +
         ", id=" + id +
+        ", name=" + name +
+        ", desc=" + desc +
         ", userId=" + userId +
-        ", token=" + token +
-        ", expire=" + expire +
+        ", templateId=" + templateId +
         ", timestamp=" + timestamp +
         "}";
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

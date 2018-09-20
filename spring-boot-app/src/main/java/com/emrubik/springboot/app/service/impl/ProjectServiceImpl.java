@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IPageService;
 import com.emrubik.springboot.app.service.IProjectService;
-import com.emrubik.springboot.dao.entity.Page;
-import com.emrubik.springboot.dao.entity.Project;
 import com.emrubik.springboot.dao.mapper.ProjectMapper;
+import com.emrubik.springboot.domain.po.Page;
+import com.emrubik.springboot.domain.po.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

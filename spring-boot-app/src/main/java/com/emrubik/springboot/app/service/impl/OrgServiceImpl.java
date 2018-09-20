@@ -3,8 +3,8 @@ package com.emrubik.springboot.app.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IOrgService;
-import com.emrubik.springboot.dao.entity.Org;
 import com.emrubik.springboot.dao.mapper.OrgMapper;
+import com.emrubik.springboot.domain.po.Org;
 import com.emrubik.springboot.domain.to.org.OrgTree;
 import org.springframework.stereotype.Service;
 

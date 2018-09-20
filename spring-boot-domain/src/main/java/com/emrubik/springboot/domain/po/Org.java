@@ -1,6 +1,8 @@
-package com.emrubik.springboot.dao.entity;
+package com.emrubik.springboot.domain.po;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,16 +13,26 @@ import java.util.Date;
  * </p>
  *
  * @author puroc123
- * @since 2018-05-29
+ * @since 2018-03-20
  */
-public class Template extends Model<Template> {
+public class Org extends Model<Org> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String name;
+    private Integer parentId;
+
     private Date timestamp;
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Integer getId() {
         return id;
@@ -38,12 +50,12 @@ public class Template extends Model<Template> {
         this.name = name;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     @Override
@@ -53,10 +65,10 @@ public class Template extends Model<Template> {
 
     @Override
     public String toString() {
-        return "Template{" +
+        return "Org{" +
         ", id=" + id +
         ", name=" + name +
-        ", timestamp=" + timestamp +
+        ", parentId=" + parentId +
         "}";
     }
 }

@@ -1,7 +1,7 @@
 package com.emrubik.springboot.dao.mapper;
 
-import com.emrubik.springboot.dao.entity.Component;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.emrubik.springboot.domain.po.Component;
 
 /**
  * <p>

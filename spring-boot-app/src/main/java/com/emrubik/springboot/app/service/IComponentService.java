@@ -1,7 +1,7 @@
 package com.emrubik.springboot.app.service;
 
-import com.emrubik.springboot.dao.entity.Component;
 import com.baomidou.mybatisplus.service.IService;
+import com.emrubik.springboot.domain.po.Component;
 
 /**
  * <p>

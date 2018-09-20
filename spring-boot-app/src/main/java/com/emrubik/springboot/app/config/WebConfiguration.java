@@ -23,18 +23,22 @@ import java.util.Collections;
 @Primary
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
+    //全局异常拦截器
     @Bean
     public GlobalExceptionHandler getGlobalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
 
+    //添加拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         ArrayList<String> commonPathPatterns = getExcludeCommonPathPatterns();
+        //添加jwt拦截器，解析token，获取用户信息
         registry.addInterceptor(getJwtInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
         super.addInterceptors(registry);
     }
 
+    // ????
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor() {
         return new MethodValidationPostProcessor();

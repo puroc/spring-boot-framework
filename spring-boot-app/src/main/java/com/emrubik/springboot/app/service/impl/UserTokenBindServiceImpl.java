@@ -2,8 +2,8 @@ package com.emrubik.springboot.app.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springboot.app.service.IUserTokenBindService;
-import com.emrubik.springboot.dao.entity.UserTokenBind;
 import com.emrubik.springboot.dao.mapper.UserTokenBindMapper;
+import com.emrubik.springboot.domain.po.UserTokenBind;
 import org.springframework.stereotype.Service;
 
 /**
