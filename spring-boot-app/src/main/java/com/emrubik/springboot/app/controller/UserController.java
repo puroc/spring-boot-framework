@@ -98,6 +98,12 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/role")
+    public ResponseEntity getUserRole(){
+
+    }
+
+
     @DeleteMapping
     public ResponseEntity
     deleteUserList(@RequestBody BaseReq<User> baseReq) {

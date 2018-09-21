@@ -50,16 +50,8 @@ public class User extends Model<User> {
     @Email
     private String email;
 
-    @JSONField(serialize = false)
     @NotNull(message = "机构ID不能为空")
     private Integer orgId;
-
-    @Valid
-    @TableField(exist = false)
-    private List<Role> roles;
-
-    @TableField(exist = false)
-    private Org org;
 
     private Date timestamp;
 
@@ -69,22 +61,6 @@ public class User extends Model<User> {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public Org getOrg() {
-        return org;
-    }
-
-    public void setOrg(Org org) {
-        this.org = org;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public Integer getId() {
