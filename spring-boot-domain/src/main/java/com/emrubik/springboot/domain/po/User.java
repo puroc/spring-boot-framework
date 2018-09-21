@@ -45,11 +45,9 @@ public class User extends Model<User> {
     private String name;
 
     @Pattern(regexp = "^((13[0-9])|(14[0-9])|(15[0-9])|(17[0-9])|(18[0-9]))\\d{8}$", message = "手机号必须是以13~18开头的11位数字")
-    @NotBlank
     private String phone;
 
     @Email
-    @NotBlank
     private String email;
 
     @JSONField(serialize = false)
