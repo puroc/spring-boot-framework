@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emrubik.springboot.dao.mapper.UserMapper">
 
-    <resultMap id="UserResultMap" type="com.emrubik.springboot.domain.po.User">
+    <resultMap id="UserResultMap" type="com.emrubik.springboot.domain.po.extension.UserExt">
         <id column="userId" jdbcType="INTEGER" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
@@ -10,58 +10,33 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="orgId" jdbcType="INTEGER" property="orgId"/>
-        <association property="org" javaType="com.emrubik.springboot.domain.po.Org">
-            <id property="id" column="orgId"/>
-            <result property="name" column="userOrgName"/>
-        </association>
-        <collection property="roles" ofType="com.emrubik.springboot.domain.po.Role">
+        <collection property="roles" ofType="com.emrubik.springboot.domain.po.extension.RoleExt">
             <id column="roleId" jdbcType="INTEGER" property="id"/>
-            <result column="roleName" jdbcType="VARCHAR" property="name"/>
-            <association property="org" javaType="com.emrubik.springboot.domain.po.Org">
-                <id property="id" column="roleBindOrgId"/>
-                <result property="name" column="roleBindOrgName"/>
-            </association>
+            <result column="roleBindOrgId" jdbcType="VARCHAR" property="orgId"/>
             <collection property="permissions" ofType="com.emrubik.springboot.domain.po.Permission">
-                <id column="permissionId" jdbcType="INTEGER" property="id"/>
-                <result column="permissionName" jdbcType="VARCHAR" property="name"/>
-                <result column="permissionParentId" jdbcType="INTEGER" property="parentId"/>
                 <result column="permissionCode" jdbcType="VARCHAR" property="code"/>
-                <result column="permissionType" jdbcType="VARCHAR" property="type"/>
-                <result column="permissionUrl" jdbcType="VARCHAR" property="url"/>
             </collection>
         </collection>
     </resultMap>
 
     <select id="getUserInfo" resultMap="UserResultMap">
         SELECT
-        `user`.id AS userid,
-        `user`.username AS username,
-        `user`.`password` AS `password`,
-        `user`.`name` AS `name`,
-        `user`.phone AS phone,
-        `user`.email AS email,
-        `user`.org_id AS orgId,
-		org2.`name` AS userOrgName,
-        role.id AS roleId,
-        role.`name` AS roleName,
-        user_role_bind.org_id AS roleBindOrgId,
-        org.`name` AS roleBindOrgName,
-        permission.id AS permissionId,
-        permission.`name` AS permissionname,
-        permission.parent_id AS permissionParentId,
-        permission.`code` AS permissionCode,
-        permission.type AS permissionType,
-        permission.url AS permissionUrl
-    FROM
-        `user`
-        LEFT OUTER JOIN user_role_bind ON `user`.id = user_role_bind.user_id
-        LEFT OUTER JOIN role ON user_role_bind.role_id = role.id
-        LEFT OUTER JOIN role_permission_bind ON role_permission_bind.role_id = role.id
-        LEFT OUTER JOIN permission ON permission.id = role_permission_bind.permission_id
-        LEFT OUTER JOIN org ON user_role_bind.org_id = org.id
-				LEFT OUTER JOIN org org2 ON `user`.org_id = org2.id
-    WHERE
-        USER.id =#{userId}
+            user.id AS userid,
+            user.username AS username,
+            user.PASSWORD AS PASSWORD,
+            user.NAME AS NAME,
+            user.phone AS phone,
+            user.email AS email,
+            user.org_id AS orgId,
+            user_role_bind.role_id AS roleId,
+            user_role_bind.org_id AS roleBindOrgId,
+            permission.code AS permissionCode
+        FROM
+            user LEFT OUTER JOIN user_role_bind ON user_role_bind.user_id = user.id
+            LEFT OUTER JOIN role_permission_bind ON role_permission_bind.role_id = user_role_bind.role_id
+            LEFT OUTER JOIN permission ON permission.id = role_permission_bind.permission_id
+        WHERE
+            user.id =#{userId}
     </select>
 
     <select id="getUserListByOrgId" resultMap="UserResultMap">

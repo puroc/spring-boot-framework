@@ -2,27 +2,18 @@ package com.emrubik.springboot.app.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.emrubik.springboot.app.service.IOrgService;
-import com.emrubik.springboot.app.service.IRoleService;
-import com.emrubik.springboot.app.service.IUserService;
 import com.emrubik.springboot.domain.po.Org;
-import com.emrubik.springboot.domain.po.Role;
-import com.emrubik.springboot.domain.po.User;
 import com.emrubik.springboot.domain.to.base.BaseReq;
 import com.emrubik.springboot.domain.to.base.BaseResp;
-import com.emrubik.springboot.domain.to.base.PageResp;
-import com.emrubik.springboot.domain.to.org.AddOrgReq;
 import com.emrubik.springboot.domain.to.org.OrgTree;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -36,86 +27,13 @@ import java.util.List;
  */
 @Controller
 @Validated
-@RequestMapping("/idm/org")
+@RequestMapping("/idm")
 public class OrgController {
-
-    @Autowired
-    private IUserService userService;
 
     @Autowired
     private IOrgService orgService;
 
-    @Autowired
-    private IRoleService roleService;
-
-    @GetMapping("/{orgId}/users")
-    public ResponseEntity getUserListByOrgId(@PathVariable String orgId,
-                                             @RequestParam int current,
-                                             @RequestParam int size,
-                                             @RequestParam(required = false) String name,
-                                             @RequestParam(required = false) String username,
-                                             @RequestParam(required = false) String phone,
-                                             @RequestParam(required = false) String email) throws Exception {
-
-        //根据当前机构ID查询出机构树，并转换为list
-        List<Integer> orgList = getOrgList(orgId);
-
-        Wrapper<User> wrapper = new EntityWrapper<User>().in("org_id", orgList);
-        if (!StringUtils.isEmpty(name)) {
-            wrapper.like("user.name", name.trim());
-        }
-        if (!StringUtils.isEmpty(username)) {
-            wrapper.like("user.username", username.trim());
-        }
-        if (!StringUtils.isEmpty(email)) {
-            wrapper.like("user.email", email.trim());
-        }
-        if (!StringUtils.isEmpty(phone)) {
-            wrapper.like("user.phone", phone.trim());
-        }
-
-        Page<User> userPage = userService.getUserListByOrgId(new Page<User>(current, size), wrapper);
-        PageResp<User> baseResp = new PageResp<User>();
-        baseResp.setPayloads(userPage.getRecords());
-        baseResp.setTotalNum(userPage.getTotal());
-        return ResponseEntity.ok(baseResp);
-    }
-
-    @GetMapping("/{orgId}/roles")
-    public ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
-                                             @RequestParam(required = false) int current,
-                                             @RequestParam(required = false) int size,
-                                             @RequestParam(required = false) String name) {
-        //根据当前机构获取其上级所有机构（包括当前机构）
-        List<Integer> upperOrgList = orgService.getUpperOrgList(orgId);
-
-        Wrapper<Role> wrapper = new EntityWrapper<Role>().in("org_id", upperOrgList);
-        if (!StringUtils.isEmpty(name)) {
-            wrapper.like("role.name", name.trim());
-        }
-        BaseResp<Role> baseResp = null;
-        if (current == 0 && size == 0) {
-            List<Role> roles = roleService.selectList(wrapper);
-            baseResp = new BaseResp<Role>();
-            baseResp.setPayloads(roles);
-        } else {
-
-            Page<Role> rolePage = roleService.getRoleListByOrgId(new Page<Role>(current, size), wrapper);
-            baseResp = new PageResp<Role>();
-            baseResp.setPayloads(rolePage.getRecords());
-            ((PageResp<Role>)baseResp).setTotalNum(rolePage.getTotal());
-        }
-
-        return ResponseEntity.ok(baseResp);
-    }
-
-    private List<Integer> getOrgList(@PathVariable String orgId) {
-        OrgTree orgTree = orgService.getOrgTree(orgId);
-        List<Integer> orgList = orgService.getOrgList(new ArrayList<Integer>(), orgTree);
-        return orgList;
-    }
-
-    @GetMapping("{orgId}/tree")
+    @GetMapping("/org/{orgId}/tree")
     public ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
         OrgTree orgTree = orgService.getOrgTree(orgId);
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
@@ -123,49 +41,57 @@ public class OrgController {
         return ResponseEntity.ok(baseResp);
     }
 
-    @GetMapping("{orgId}")
-    public ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId) {
+    @GetMapping("/org/{orgId}")
+    public ResponseEntity getOrg(@PathVariable @NotBlank String orgId) {
         Org org = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId));
         BaseResp<Org> baseResp = new BaseResp<Org>();
         baseResp.setPayLoad(org);
         return ResponseEntity.ok(baseResp);
     }
 
-    @PostMapping("{orgId}")
-    public ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq, @PathVariable String orgId) {
-        AddOrgReq addOrgReq = baseReq.getPayloads().get(0);
-        Org org = new Org();
-        org.setName(addOrgReq.getLabel());
-        org.setParentId(Integer.parseInt(orgId));
+    @PostMapping("/org")
+    public ResponseEntity insertOrg(@RequestBody @Validated BaseReq<Org> baseReq) {
+        Org org = baseReq.getPayloads().get(0);
         org.setTimestamp(new Date());
         boolean result = orgService.insert(org);
         BaseResp baseResp = new BaseResp();
         if (!result) {
-            baseResp.setResultCode(BaseResp.RESULT_FAILED);
-            baseResp.setMessage("机构" + addOrgReq.getLabel() + "插入失败");
+            baseResp.fail("机构" + org.getName() + "插入失败");
         }
         return ResponseEntity.ok(baseResp);
     }
 
-    @DeleteMapping("{orgId}")
+    @PutMapping("/org/{orgId}")
+    public ResponseEntity updateOrg(@RequestBody @Validated BaseReq<Org> baseReq,@PathVariable String orgId){
+        Org org = baseReq.getPayloads().get(0);
+        boolean result = orgService.update(org, new EntityWrapper<Org>().eq("id", orgId));
+        BaseResp baseResp = new BaseResp();
+        if (!result) {
+            baseResp.fail("机构" + orgId + "更新失败");
+        }
+        return ResponseEntity.ok(baseResp);
+    }
+
+    @DeleteMapping("/org/{orgId}")
     public ResponseEntity deleteOrg(@PathVariable String orgId) {
         BaseResp baseResp = new BaseResp();
+        //有下级机构时，不允许删除该机构
         List<Org> sonOrgList = orgService.selectList(new EntityWrapper<Org>().eq("parent_id", orgId));
         if (!sonOrgList.isEmpty()) {
-            baseResp.setResultCode(BaseResp.EXIST_SON_ORG);
-            baseResp.setMessage("该机构拥有下级机构，不允许删除");
+            baseResp.fail(BaseResp.EXIST_SON_ORG,"该机构拥有下级机构，不允许删除");
             return ResponseEntity.ok(baseResp);
         }
+        //该机构是根机构时，不允许删除该机构
         Org rootOrg = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId).eq("parent_id", 0));
         if (rootOrg != null) {
-            baseResp.setResultCode(BaseResp.CAN_NOT_DELETE_ROOT_ORG);
             baseResp.setMessage("不能删除企业根机构");
+            baseResp.fail(BaseResp.CAN_NOT_DELETE_ROOT_ORG,"不能删除企业根机构");
             return ResponseEntity.ok(baseResp);
         }
+        //删除机构
         boolean result = orgService.delete(new EntityWrapper<Org>().eq("id", orgId));
         if (!result) {
-            baseResp.setResultCode(BaseResp.RESULT_FAILED);
-            baseResp.setMessage("删除机构：" + orgId + "失败");
+            baseResp.fail("删除机构：" + orgId + "失败");
         }
         return ResponseEntity.ok(baseResp);
     }

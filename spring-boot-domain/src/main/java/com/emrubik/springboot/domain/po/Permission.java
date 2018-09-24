@@ -1,9 +1,7 @@
 package com.emrubik.springboot.domain.po;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-
+import com.baomidou.mybatisplus.annotations.TableId;
 import java.io.Serializable;
 
 /**
@@ -12,9 +10,9 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-09-23
  */
-public class Permission extends Model<Permission> {
+public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -73,11 +71,6 @@ public class Permission extends Model<Permission> {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 
     @Override

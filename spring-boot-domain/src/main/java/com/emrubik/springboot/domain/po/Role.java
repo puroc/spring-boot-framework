@@ -1,16 +1,13 @@
 package com.emrubik.springboot.domain.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -18,9 +15,9 @@ import java.util.List;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-09-23
  */
-public class Role extends Model<Role> {
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,52 +25,15 @@ public class Role extends Model<Role> {
     private Integer id;
 
     @Pattern(regexp = "^[\\u4e00-\\u9fa5]*$", message = "角色名称必须为中文")
-//    @NotBlank
+    @NotBlank
     private String name;
 
-    @JSONField(serialize = false)
+    //    @JSONField(serialize = false)
     @NotNull
     private Integer orgId;
 
-    @TableField(exist = false)
-    private Org org;
-
-    @TableField(exist = false)
-    private List<Permission> permissions;
-
     private Date timestamp;
 
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Integer getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
-    }
-
-    public Org getOrg() {
-        return org;
-    }
-
-    public void setOrg(Org org) {
-        this.org = org;
-    }
-
-    public List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
 
     public Integer getId() {
         return id;
@@ -91,9 +51,20 @@ public class Role extends Model<Role> {
         this.name = name;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -101,6 +72,8 @@ public class Role extends Model<Role> {
         return "Role{" +
         ", id=" + id +
         ", name=" + name +
+        ", orgId=" + orgId +
+        ", timestamp=" + timestamp +
         "}";
     }
 }

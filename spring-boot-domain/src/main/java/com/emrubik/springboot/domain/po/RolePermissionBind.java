@@ -1,10 +1,7 @@
 package com.emrubik.springboot.domain.po;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import javax.validation.constraints.NotNull;
+import com.baomidou.mybatisplus.annotations.TableId;
 import java.io.Serializable;
 
 /**
@@ -13,19 +10,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-09-23
  */
-public class RolePermissionBind extends Model<RolePermissionBind> {
+public class RolePermissionBind implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
-    @NotNull
     private Integer roleId;
-
-    @NotNull
     private Integer permissionId;
 
 
@@ -51,11 +44,6 @@ public class RolePermissionBind extends Model<RolePermissionBind> {
 
     public void setPermissionId(Integer permissionId) {
         this.permissionId = permissionId;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 
     @Override

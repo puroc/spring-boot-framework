@@ -1,12 +1,9 @@
 package com.emrubik.springboot.domain.po;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,21 +11,19 @@ import java.util.Date;
  * </p>
  *
  * @author puroc123
- * @since 2018-05-29
+ * @since 2018-09-23
  */
-public class Project extends Model<Project> {
+public class Project implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
-    @Pattern(regexp = "^\\w+$", message = "用户名只能由字母数字和下划线组成")
     private String name;
     private String desc;
-    private Integer userId;
     private Integer templateId;
     private Date timestamp;
+    private Integer userId;
 
 
     public Integer getId() {
@@ -71,9 +66,12 @@ public class Project extends Model<Project> {
         this.timestamp = timestamp;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -82,17 +80,9 @@ public class Project extends Model<Project> {
         ", id=" + id +
         ", name=" + name +
         ", desc=" + desc +
-        ", userId=" + userId +
         ", templateId=" + templateId +
         ", timestamp=" + timestamp +
+        ", userId=" + userId +
         "}";
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 }

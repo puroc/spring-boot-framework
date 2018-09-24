@@ -2,13 +2,17 @@ package com.emrubik.springboot.app.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.emrubik.springboot.app.service.IOrgService;
 import com.emrubik.springboot.app.service.IRolePermissionBindService;
 import com.emrubik.springboot.app.service.IRoleService;
-import com.emrubik.springboot.domain.po.Permission;
 import com.emrubik.springboot.domain.po.Role;
 import com.emrubik.springboot.domain.po.RolePermissionBind;
 import com.emrubik.springboot.domain.to.base.BaseReq;
 import com.emrubik.springboot.domain.to.base.BaseResp;
+import com.emrubik.springboot.domain.to.base.PageResp;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,6 +39,9 @@ public class RoleController {
 
     @Autowired
     private IRoleService roleService;
+
+    @Autowired
+    private IOrgService orgService;
 
     @Autowired
     private IRolePermissionBindService rolePermissionBindService;
@@ -143,12 +150,12 @@ public class RoleController {
     //将permissionId的列表转换为RolePermissionBind对象的列表
     private List<RolePermissionBind> changePermissionListToRolePermissionBind(Role role) {
         List<RolePermissionBind> permissionBinds = new ArrayList<RolePermissionBind>();
-        for (Permission permission : role.getPermissions()) {
-            permissionBinds.add(new RolePermissionBind() {{
-                this.setRoleId(role.getId());
-                this.setPermissionId(permission.getId());
-            }});
-        }
+//        for (Permission permission : role.getPermissions()) {
+//            permissionBinds.add(new RolePermissionBind() {{
+//                this.setRoleId(role.getId());
+//                this.setPermissionId(permission.getId());
+//            }});
+//        }
         return permissionBinds;
     }
 
@@ -195,6 +202,33 @@ public class RoleController {
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
         return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/{orgId}/roles")
+    public ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
+                                             @RequestParam(required = false) int current,
+                                             @RequestParam(required = false) int size,
+                                             @RequestParam(required = false) String name) {
+        //根据当前机构获取其上级所有机构（包括当前机构）
+        List<Integer> upperOrgList = orgService.getUpperOrgList(orgId);
+
+        Wrapper<Role> wrapper = new EntityWrapper<Role>().in("org_id", upperOrgList);
+        if (!StringUtils.isEmpty(name)) {
+            wrapper.like("role.name", name.trim());
+        }
+        BaseResp<Role> baseResp = null;
+        if (current == 0 && size == 0) {
+            List<Role> roles = roleService.selectList(wrapper);
+            baseResp = new BaseResp<Role>();
+            baseResp.setPayloads(roles);
+        } else {
+
+            Page<Role> rolePage = roleService.getRoleListByOrgId(new Page<Role>(current, size), wrapper);
+            baseResp = new PageResp<Role>();
+            baseResp.setPayloads(rolePage.getRecords());
+            ((PageResp<Role>)baseResp).setTotalNum(rolePage.getTotal());
+        }
+        return ResponseEntity.ok(baseResp);
     }
 
 }

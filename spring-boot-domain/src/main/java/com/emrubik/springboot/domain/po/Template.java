@@ -1,9 +1,7 @@
 package com.emrubik.springboot.domain.po;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -11,9 +9,9 @@ import java.util.Date;
  * </p>
  *
  * @author puroc123
- * @since 2018-05-29
+ * @since 2018-09-23
  */
-public class Template extends Model<Template> {
+public class Template implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,11 +42,6 @@ public class Template extends Model<Template> {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 
     @Override

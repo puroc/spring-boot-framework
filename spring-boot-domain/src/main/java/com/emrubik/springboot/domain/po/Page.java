@@ -1,21 +1,20 @@
 package com.emrubik.springboot.domain.po;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 0:不隐藏
+1:隐藏
  * </p>
  *
  * @author puroc123
- * @since 2018-07-03
+ * @since 2018-09-23
  */
-public class Page extends Model<Page> {
+public class Page implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -83,11 +82,6 @@ public class Page extends Model<Page> {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 
     @Override

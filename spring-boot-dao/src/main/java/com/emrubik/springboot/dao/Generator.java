@@ -8,6 +8,9 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Generator {
 
     private static void generateByTables(String packageName, String... tableNames) {
@@ -26,7 +29,7 @@ public class Generator {
                 .setDbColumnUnderline(true)//下划线命名
                 .setNaming(NamingStrategy.underline_to_camel)
                 .setInclude(tableNames);//修改替换成你需要的表名，多个表名传数组
-        config.setActiveRecord(true)
+        config.setActiveRecord(false)
                 .setAuthor("puroc")
                 .setOutputDir("/Users/puroc/git/spring-boot-framework/spring-boot-dao/output")
                 .setFileOverride(true)
@@ -44,6 +47,21 @@ public class Generator {
 
     public static void main(String[] args) {
         String packageName = "com.emrubik.springboot.dao";
-        generateByTables(packageName, "user_role_bind");
+        List<String> list = new ArrayList<String>();
+        String[] tables = new String[list.size()];
+        list.add("component");
+        list.add("org");
+        list.add("page");
+        list.add("permission");
+        list.add("project");
+        list.add("role");
+        list.add("role_premission_bind");
+        list.add("tempalte");
+        list.add("user");
+        list.add("user_role_bind");
+        list.add("user_token_bind");
+        list.toArray(tables);
+
+        generateByTables(packageName, tables);
     }
 }

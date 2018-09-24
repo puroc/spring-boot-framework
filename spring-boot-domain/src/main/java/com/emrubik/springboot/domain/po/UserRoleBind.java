@@ -1,9 +1,7 @@
 package com.emrubik.springboot.domain.po;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-
+import com.baomidou.mybatisplus.annotations.TableId;
 import java.io.Serializable;
 
 /**
@@ -12,9 +10,9 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-09-20
+ * @since 2018-09-23
  */
-public class UserRoleBind extends Model<UserRoleBind> {
+public class UserRoleBind implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -55,11 +53,6 @@ public class UserRoleBind extends Model<UserRoleBind> {
 
     public void setOrgId(Integer orgId) {
         this.orgId = orgId;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 
     @Override

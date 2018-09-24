@@ -1,30 +1,25 @@
 package com.emrubik.springboot.domain.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
- * <p>
+ * 
  * </p>
  *
  * @author puroc123
- * @since 2018-03-20
+ * @since 2018-09-23
  */
-public class User extends Model<User> {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -55,13 +50,6 @@ public class User extends Model<User> {
 
     private Date timestamp;
 
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
 
     public Integer getId() {
         return id;
@@ -119,21 +107,25 @@ public class User extends Model<User> {
         this.orgId = orgId;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                ", id=" + id +
-                ", username=" + username +
-                ", password=" + password +
-                ", name=" + name +
-                ", phone=" + phone +
-                ", email=" + email +
-                ", orgId=" + orgId +
-                "}";
+        ", id=" + id +
+        ", username=" + username +
+        ", password=" + password +
+        ", name=" + name +
+        ", phone=" + phone +
+        ", email=" + email +
+        ", orgId=" + orgId +
+        ", timestamp=" + timestamp +
+        "}";
     }
 }
