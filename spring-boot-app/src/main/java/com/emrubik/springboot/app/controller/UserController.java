@@ -34,7 +34,7 @@ import java.util.List;
  */
 @Controller
 @Validated
-@RequestMapping("/idm")
+@RequestMapping("/idm/user")
 public class UserController {
 
     @Autowired
@@ -44,7 +44,7 @@ public class UserController {
     private IOrgService orgService;
 
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getUser(@PathVariable String id) {
         User user = userService.getUserInfo(id);
         BaseResp resp = new BaseResp();
@@ -52,7 +52,7 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping
     public ResponseEntity
     deleteUserList(@RequestBody BaseReq<User> baseReq) {
         List<String> userIdList = new ArrayList<String>();
@@ -69,7 +69,7 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable String id) {
         boolean result = userService.delete(new EntityWrapper<User>().eq("id", id));
         BaseResp resp = new BaseResp();
@@ -79,7 +79,7 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity updateUser(@RequestBody BaseReq<User> baseReq,@PathVariable String id) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
@@ -91,7 +91,7 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
-    @PostMapping("/user")
+    @PostMapping
     public ResponseEntity insertUser(@RequestBody @Validated BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
@@ -108,8 +108,8 @@ public class UserController {
     }
 
 
-    @GetMapping("/org/{orgId}/user")
-    public ResponseEntity listUserByOrgId(@PathVariable String orgId,
+    @GetMapping
+    public ResponseEntity listUserByOrgId(@RequestParam String orgId,
                                           @RequestParam int current,
                                           @RequestParam int size,
                                           @RequestParam(required = false) String name,

@@ -2,32 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emrubik.springboot.dao.mapper.RoleMapper">
 
-    <resultMap id="RoleResultMap" type="com.emrubik.springboot.domain.po.Role">
+    <resultMap id="RoleResultMap" type="com.emrubik.springboot.domain.po.extension.RoleExt">
         <id column="id" jdbcType="INTEGER" property="id"></id>
         <result column="name" jdbcType="VARCHAR" property="name"></result>
         <result column="orgId" jdbcType="INTEGER" property="orgId"></result>
-        <association property="org" javaType="com.emrubik.springboot.domain.po.Org">
-            <id column="orgId" jdbcType="INTEGER" property="id"></id>
-            <result column="orgName" jdbcType="VARCHAR" property="name"></result>
-        </association>
+        <!--<association property="org" javaType="com.emrubik.springboot.domain.po.Org">-->
+            <!--<id column="orgId" jdbcType="INTEGER" property="id"></id>-->
+            <!--<result column="orgName" jdbcType="VARCHAR" property="name"></result>-->
+        <!--</association>-->
         <collection property="permissions" ofType="com.emrubik.springboot.domain.po.Permission">
-            <id column="permissionId" jdbcType="INTEGER" property="id"></id>
-            <result column="permissionName" jdbcType="VARCHAR" property="name"></result>
+            <!--<id column="permissionId" jdbcType="INTEGER" property="id"></id>-->
+            <result column="permissionCode" jdbcType="VARCHAR" property="code"></result>
         </collection>
     </resultMap>
 
     <select id="getRoleInfo" resultMap="RoleResultMap">
         SELECT
-        role.id AS id,
-        role.`name` AS NAME,
-        role.org_id AS orgId,
-        org.name AS orgName,
-        permission.id AS permissionId,
-        permission.`name` AS permissionName
+            role.id AS id,
+            role.`name` AS NAME,
+            role.org_id AS orgId,
+            role_permission_bind.id AS permissionId,
+            permission.code AS permissionCode
         FROM role
         LEFT OUTER JOIN role_permission_bind ON role.id =role_permission_bind.role_id
         LEFT OUTER JOIN permission ON role_permission_bind.permission_id = permission.id
-        LEFT OUTER JOIN org on role.org_id=org.id
         where role.id=#{roleId}
     </select>
 
@@ -36,9 +34,8 @@
             role.id AS id,
             role.`name` AS NAME,
             role.org_id AS orgId,
-            org.NAME AS orgName,
-            permission.id AS permissionId,
-            permission.`name` AS permissionName
+            role_permission_bind.id AS permissionId,
+            permission.code AS permissionCode
         FROM role
         INNER JOIN org ON `role`.org_id = org.id
         LEFT OUTER JOIN role_permission_bind ON role.id = role_permission_bind.role_id
