@@ -49,7 +49,7 @@ public class ProjectController {
 //    }
 
     @GetMapping("/list")
-    public ResponseEntity getProjectList() {
+    public ResponseEntity listProject() {
         List<Project> projectList = iProjectService.selectList(new EntityWrapper<Project>().eq("user_id", BaseContextHandler.getUserId()));
         BaseResp<Project> baseResp = new BaseResp<Project>();
         baseResp.setPayloads(projectList);
@@ -61,7 +61,7 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity addProject(@RequestBody @Validated BaseReq<Project> baseReq) {
+    public ResponseEntity insertProject(@RequestBody @Validated BaseReq<Project> baseReq) {
         Project project = baseReq.getPayloads().get(0);
         project.setUserId(Integer.parseInt(BaseContextHandler.getUserId()));
         project.setTimestamp(new Date());
@@ -81,28 +81,28 @@ public class ProjectController {
         return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/{projectId}")
-    public ResponseEntity updateProject(@PathVariable String projectId, @RequestBody BaseReq<Project> baseReq) {
+    @PutMapping("/{id}")
+    public ResponseEntity updateProject(@PathVariable String id, @RequestBody BaseReq<Project> baseReq) {
         Project project = baseReq.getPayloads().get(0);
         project.setTimestamp(new Date());
-        boolean result = iProjectService.update(project, new EntityWrapper<Project>().eq("id", projectId));
+        boolean result = iProjectService.update(project, new EntityWrapper<Project>().eq("id", id));
         BaseResp resp = new BaseResp();
         if (!result) {
-            resp.setMessage("projectId:" + projectId + "的工程不存在，修改失败");
+            resp.setMessage("projectId:" + id + "的工程不存在，修改失败");
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
         return ResponseEntity.ok(resp);
     }
 
-    @DeleteMapping("/{projectId}")
-    public ResponseEntity deleteProject(@PathVariable String projectId) throws Exception {
-        boolean result = iProjectService.delete(new EntityWrapper<Project>().eq("id", projectId));
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteProject(@PathVariable String id) throws Exception {
+        boolean result = iProjectService.delete(new EntityWrapper<Project>().eq("id", id));
         BaseResp resp = new BaseResp();
         if (!result) {
-            resp.setMessage("projectId:" + projectId + "的工程不存在，删除失败");
+            resp.setMessage("projectId:" + id + "的工程不存在，删除失败");
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
-        iProjectService.deleteAllResouces(projectId);
+        iProjectService.deleteAllResouces(id);
         return ResponseEntity.ok(resp);
     }
 

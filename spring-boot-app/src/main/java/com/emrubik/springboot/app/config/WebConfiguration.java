@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-@Configuration("idmWebConfig")
+@Configuration("webConfig")
 @Primary
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
