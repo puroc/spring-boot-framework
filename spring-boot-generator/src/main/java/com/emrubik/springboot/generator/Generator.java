@@ -1,4 +1,4 @@
-package com.emrubik.springboot.dao;
+package com.emrubik.springboot.generator;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -31,7 +31,7 @@ public class Generator {
                 .setInclude(tableNames);//修改替换成你需要的表名，多个表名传数组
         config.setActiveRecord(false)
                 .setAuthor("puroc")
-                .setOutputDir("/Users/puroc/git/spring-boot-framework/spring-boot-dao/output")
+                .setOutputDir("/Users/puroc/git/spring-boot-framework/spring-boot-generator/output")
                 .setFileOverride(true)
                 .setEnableCache(false);
         new AutoGenerator().setGlobalConfig(config)
